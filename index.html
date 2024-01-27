@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Card Animation</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      transition: background 0.5s ease-in-out;
+      font-family: 'Times New Roman', Times, serif;
+      background: url('background.png') center/cover no-repeat;
+      height: 100vh;
+    }
+
+    .align {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 220px;
+    }
+
+    .cards-container {
+      margin-top: 100px;  
+      display: flex;
+      justify-content: center;
+      gap: 180px; /* Adjust the gap as needed */
+      transform: scale(1);
+      transition: transform 1s ease-in-out;
+      margin-right: 15px;
+    }
+
+    .card {
+      width: 180px; /* Adjust the width as needed */
+      height: 270px; /* Adjust the height as needed */
+      perspective: 1000px;
+      cursor: pointer;      
+    }
+
+    .card-inner {
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 1s;
+    }
+
+    .category{
+        color: rgb(255, 229, 152);
+        margin-bottom: 10px;
+        text-align: center;
+        font-size: 22px;
+        font-family:cursive;
+    }
+
+    .card.flip .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-face,
+    .card-back {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      backface-visibility: hidden;
+      display: flex;
+      align-items: flex-end;
+      justify-content:center;
+      text-align: center;
+      font-size: 12px; /* Adjust the font size as needed */
+      font-weight: bold;
+      color: rgba(29, 1, 1, 0.664);
+    }
+
+    .card-face {
+      background-color: #3498db;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .image-layer {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: url('layer.png') center/cover no-repeat;
+    }
+  
+
+    .card-back {
+      transform: rotateY(180deg);
+      background: url('new.png') center/cover no-repeat;
+    }
+
+    #generate {
+      visibility: hidden;
+    }
+
+    #generateBtn {
+      margin: auto; /* Center the button horizontally */
+      margin-top: 20px; /* Adjust the top margin as needed */
+      padding: 20px 90px; /* Adjust the padding as needed */
+      font-size: 28px; /* Adjust the font size as needed */
+      cursor: pointer;
+      background-color: #46301800;
+      color: rgba(255, 255, 255, 0);
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      font-style: italic;
+      border-color: #29120000;
+    }
+
+    #generateBtn:hover {
+      background-color: #2e140048;
+    }
+
+
+    .text{
+        margin-top: 165px;
+        padding-left: 30px;
+        padding-right: 30px;
+        font-size: 16px;
+
+    }
+    .background{
+        width: 200px;
+        height: 250px;
+    }
+
+    #backgroundface1{
+        background: url('/theme/url_wild_west.jpeg') repeat;
+        background-size: contain;
+    }
+
+    #backgroundface2{
+        background: url('/medium/physicalgame.jpeg') repeat;
+        background-size: contain;
+    }
+
+    #backgroundface3{
+        background: url('/mechanic/dice.jpeg') repeat;
+        background-size: contain;
+    }
+
+  </style>
+</head>
+<body>
+
+    <div class="align">
+      <div class="cards-container">
+
+        <div class="card" id="card1">
+          <div class="category">Game Theme</div>  
+          <div class="card-inner">
+            <div class="card-face">
+                <div class="background" id="backgroundface1"></div>                
+                <div class="image-layer">
+                    <div class="text" id="cardface1content">Wild West Frontier</div></div>
+                </div>
+            <div class="card-back" id="cardback1"></div>
+          </div>
+        </div>
+
+        <div class="card" id="card2">
+            <div class="category">Play Medium</div>  
+            <div class="card-inner">
+              <div class="card-face" >
+                <div class="background" id="backgroundface2"></div>                                
+                  <div class="image-layer">
+                      <div class="text" id="cardface2content">Physical Game</div></div>
+                  </div>
+              <div class="card-back" id="cardback2"></div>
+            </div>
+        </div>
+
+        <div class="card" id="card3">
+            <div class="category">Game Mechanic</div>  
+            <div class="card-inner">
+              <div class="card-face">
+                <div class="background" id="backgroundface3"></div>                                
+                  <div class="image-layer">
+                      <div class="text" id="cardface3content">Dice Rolling</div></div>
+                  </div>
+              <div class="card-back" id="cardback3"></div>
+            </div>
+        </div>
+
+
+      </div>
+      <button id="generateBtn" onclick="generateAnimation()">FORGE</button>
+    </div>
+
+  <script>
+    function flipCard(card) {
+      card.classList.toggle('flip');
+    }
+
+    function generateRandomItem(items) {
+      const randomIndex = Math.floor(Math.random() * items.length);
+      return items[randomIndex];
+    }
+
+    function generateAnimation() {
+      const cardsContainer = document.querySelector('.cards-container');
+
+      // Trigger animation
+      cardsContainer.style.transform = "scale(1.5)";
+
+      const themes = [
+      { name: "Wild West frontier", image: "/theme/url_wild_west.jpeg" },
+      { name: "Steampunk airships and sky adventures", image: "/theme/steampunk.jpeg" },
+      { name: "Futuristic cyber espionage", image: "/theme/cyber.jpeg" },
+      { name: "Mythical creatures' circus", image: "/theme/creatures.jpeg" },
+      { name: "Jungle exploration with ancient ruins", image: "/theme/jungle.jpeg" },
+      { name: "Galactic trade and diplomacy", image: "/theme/galatic.jpeg" },
+      { name: "Time-traveling pirates", image: "/theme/pirate.jpeg" },
+      { name: "Parallel dimensions collision", image: "/theme/parallel.webp" },
+      { name: "Superhero academy training", image: "/theme/superhero.jpeg" },
+      { name: "Magical school for extraordinary beings", image: "/theme/magic.jpeg" },
+      { name: "Dystopian mega-corporation control", image: "/theme/corporation.png" },
+      { name: "Alien invasion resistance", image: "/theme/alien.jpeg" },
+      { name: "Renaissance art heist", image: "/theme/art.webp" },
+      { name: "Ancient Egyptian tomb raiding", image: "/theme/egypt.jpeg" },
+      { name: "Medieval kingdom politics", image: "/theme/medieval.jpeg" },
+      { name: "Industrial revolution inventors", image: "/theme/industrial.jpeg" },
+      { name: "Tropical island survival", image: "/theme/tropical.jpeg" },
+      { name: "Paranormal investigators in haunted houses", image: "/theme/haunted.jpeg" },
+      { name: "Genetic mutation experiments gone wrong", image: "/theme/gene.jpeg" },
+      { name: "Mythical beast", image: "/theme/beast.jpeg" },
+      { name: "Robot uprising in a futuristic cityscape", image: "/theme/robot.webp" },
+      { name: "Fairy tale characters rebellion", image: "/theme/fairytail.jpeg" },
+      { name: "Infiltrating a secret society", image: "/theme/secret.jpeg" },
+      { name: "Moon colonization and exploration", image: "/theme/moon.jpeg" },
+      { name: "Martial arts tournament across realms", image: "/theme/martial.png" },
+      { name: "Arctic exploration and discovery", image: "/theme/arctic.jpeg" }
+    ];
+    
+    const mediums = [
+    { name: "Board Game", image: "/medium/url_board_game.jpeg" },
+    { name: "Card Game", image: "/medium/cardgame.jpeg" },
+    { name: "Mobile App", image: "/medium/mobileappgame.jpeg" },
+    { name: "Virtual Reality Experience", image: "/medium/VRgame.jpeg" },
+    { name: "Augmented Reality Game", image: "/medium/ARgame.jpeg" },
+    { name: "Console Based Game", image: "/medium/consolegame.webp" },
+    { name: "Social Media-Based", image: "/medium/socialmediagame.webp" },
+    { name: "Text-Based", image: "/medium/textbasedgame.png" },
+    { name: "Physical Game", image: "/medium/physicalgame.jpeg" }
+  ];
+  
+    const mechanics = [
+    { name: "Turn-based Strategy", image: "/mechanic/turnbased.jpeg" },
+    { name: "Action Points Management", image: "/mechanic/actionpoint.jpeg" },
+    { name: "Auction or Bidding", image: "/mechanic/auctionbidding.png" },
+    { name: "Deck-building", image: "/mechanic/deckbuilding.jpeg" },
+    { name: "Capture/Eliminate Challenges", image: "/mechanic/capture.png" },
+    { name: "Catch-up Mechanisms", image: "/mechanic/catchup.jpeg" },
+    { name: "Dice Rolling", image: "/mechanic/dice.jpeg" },
+    { name: "Engine Building", image: "/mechanic/enginebuilding.jpeg" },
+    { name: "Movement", image: "/mechanic/movement.jpeg" },
+    { name: "Cooperative Storytelling", image: "/mechanic/cooperativestory.webp" },
+    { name: "Worker Placement", image: "/mechanic/worker.jpeg" },
+    { name: "Tile-laying Puzzle Mechanics", image: "/mechanic/tile.jpeg" },
+    { name: "Hidden Role Deduction", image: "/mechanic/deduction.png" },
+    { name: "Resource Management Simulation", image: "/mechanic/resource.jpeg" },
+    { name: "Risk and Reward Dynamics", image: "/mechanic/reward.jpeg" },
+    { name: "Role-playing Elements", image: "/mechanic/roleplaying.jpeg" },
+    { name: "Time Trials and Challenges", image: "/mechanic/time.png" },
+    { name: "Leaderboards and Competition", image: "/mechanic/leaderboard.png" },
+    { name: "Puzzle-solving Mechanics", image: "/mechanic/puzzle.jpeg" },
+    { name: "Hidden Object Mechanics", image: "/mechanic/hiddenobject.jpeg" },
+    { name: "Social Trading and Collaboration", image: "/mechanic/socialtrading.jpeg" },
+    { name: "In-game Gatherings", image: "/mechanic/ingame.jpeg" },
+    { name: "Quiz based", image: "/mechanic/quizbased.png" },
+    { name: "Escape Room", image: "/mechanic/escaperoom.webp" }
+    ];
+
+    const { name: randomTheme, image: themeImage } = generateRandomItem(themes);
+
+    // Update medium card
+    const { name: randomMedium, image: mediumImage } = generateRandomItem(mediums);
+
+    // Update mechanic card
+    const { name: randomMechanic, image: mechanicImage } = generateRandomItem(mechanics);
+
+// Auto-flip each card one by one
+      setTimeout(() => {
+        flipCard(document.getElementById('card1'));
+        flipCard(document.getElementById('card2'));
+        flipCard(document.getElementById('card3'));
+        setTimeout(() => {
+          document.getElementById('cardface1content').textContent = randomTheme;
+          document.getElementById('backgroundface1').style.backgroundImage = `url('${themeImage}')`;
+          flipCard(document.getElementById('card1'));
+          setTimeout(() => {
+            document.getElementById('cardface2content').textContent = randomMedium;
+            document.getElementById('backgroundface2').style.backgroundImage = `url('${mediumImage}')`;
+            flipCard(document.getElementById('card2'));
+            // After all cards are flipped, flip them back
+            setTimeout(() => {
+              document.getElementById('cardface3content').textContent = randomMechanic;
+              document.getElementById('backgroundface3').style.backgroundImage = `url('${mechanicImage}')`;
+              flipCard(document.getElementById('card3'));
+              // After flipping back, zoom out
+              setTimeout(() => {
+                cardsContainer.style.transform = "scale(1)";
+              }, 1000);
+            }, 1000);
+          }, 1000);
+        }, 1000);
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
